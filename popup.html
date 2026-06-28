@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A1 Lead Scraper Pro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <a href="https://a1techsolution.theaset.com/" target="_blank" class="logo-area">
+        <img src="icon48.png" alt="A1 Logo" class="logo-img">
+        <div class="logo-texts">
+          <h1 class="gradient-text">A1 Lead Scraper</h1>
+          <span class="sub-logo-text">High-Tech Innovation</span>
+        </div>
+      </a>
+      <div class="header-actions">
+        <button id="btn-settings" class="icon-btn" title="API Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+        <span class="badge">PRO v1.0</span>
+      </div>
+    </header>
+
+    <!-- Settings Drawer -->
+    <section id="settings-drawer" class="settings-drawer hidden">
+      <h3 class="settings-title">Supabase Cloud Settings</h3>
+      <div class="form-group">
+        <label for="input-supabase-url">Supabase Project URL</label>
+        <input type="text" id="input-supabase-url" placeholder="https://xyz.supabase.co" />
+      </div>
+      <div class="form-group">
+        <label for="input-supabase-key">Supabase Anon Key</label>
+        <input type="password" id="input-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI..." />
+      </div>
+      <div class="settings-actions">
+        <button id="btn-save-settings" class="btn btn-primary">Save Settings</button>
+        <button id="btn-clear-settings" class="btn btn-secondary">Clear Keys</button>
+      </div>
+    </section>
+
+    <!-- Map Context Check -->
+    <div id="wrong-page-warning" class="warning-banner hidden">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>Please navigate to Google Maps and run a search to start.</span>
+    </div>
+
+    <!-- Main Card / Status -->
+    <main class="main-content">
+      <!-- Configuration Controls -->
+      <section class="config-section">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lead-limit">Lead Limit</label>
+            <div class="limit-input-wrapper">
+              <input type="number" id="lead-limit" value="100" min="1" max="1000" />
+              <span class="input-suffix">leads</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Scrape Mode</label>
+            <div class="toggle-wrapper">
+              <label class="switch">
+                <input type="checkbox" id="scrape-mode-toggle" checked />
+                <span class="slider round"></span>
+              </label>
+              <span id="mode-label" class="mode-text">Deep Scrape</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row secondary-config">
+          <div class="form-group">
+            <label>Find Emails (Websites)</label>
+            <div class="toggle-wrapper">
+              <label class="switch">
+                <input type="checkbox" id="email-scrape-toggle" checked />
+                <span class="slider round"></span>
+              </label>
+              <span id="email-mode-label" class="mode-text">Active</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cloud DB Sync</label>
+            <div class="toggle-wrapper">
+              <label class="switch">
+                <input type="checkbox" id="db-sync-toggle" checked />
+                <span class="slider round"></span>
+              </label>
+              <span id="db-sync-label" class="mode-text">Active</span>
+            </div>
+          </div>
+        </div>
+        <p class="mode-desc" id="mode-description">Clicks each business listing to extract phone numbers, websites, and full addresses. Slower but extracts rich leads.</p>
+      </section>
+
+      <!-- Background Info Alert -->
+      <div class="info-banner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-dasharray="0" stroke-width="2" class="info-icon">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>Runs in background! You can switch tabs as long as Google Maps tab stays open.</span>
+      </div>
+
+      <!-- Progress Section -->
+      <section class="progress-section">
+        <div class="progress-header">
+          <span class="status-indicator" id="status-badge">
+            <span class="pulse-dot"></span>
+            <span id="status-text">Idle</span>
+          </span>
+          <span class="progress-ratio"><span id="scraped-count">0</span> / <span id="target-count">100</span></span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+      </section>
+
+      <!-- Stats Grid (3 columns) -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Websites</span>
+          <span class="stat-val" id="stat-websites">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Phones</span>
+          <span class="stat-val" id="stat-phones">0</span>
+        </div>
+        <div class="stat-card highlights">
+          <span class="stat-label">Emails</span>
+          <span class="stat-val" id="stat-emails">0</span>
+        </div>
+      </section>
+
+      <!-- Action Buttons -->
+      <section class="actions-section">
+        <button id="btn-start" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Start Scraping
+        </button>
+        <button id="btn-stop" class="btn btn-danger" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+          </svg>
+          Stop Scrape
+        </button>
+      </section>
+
+      <!-- Logs / Live Activity -->
+      <section class="logs-section">
+        <h3>Live Activity Log</h3>
+        <div class="log-container" id="log-box">
+          <div class="log-entry system">Ready. Perform a search on Google Maps, configure your limits, and click 'Start Scraping'.</div>
+        </div>
+      </section>
+
+      <!-- Exports Section -->
+      <section class="export-section">
+        <div class="export-title">Export Scraped Leads</div>
+        <div class="export-buttons">
+          <button id="btn-export-csv" class="btn btn-secondary" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CSV
+          </button>
+          <button id="btn-export-json" class="btn btn-secondary" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download JSON
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>A product of <a href="https://a1techsolution.theaset.com/" target="_blank">A1 Tech Solution</a>. All rights reserved.</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

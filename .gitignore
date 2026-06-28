@@ -1,0 +1,8 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Local temporary files
+*.tmp
+*.log
+make_icons.py
